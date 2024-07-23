@@ -1,0 +1,92 @@
+<% 
+    // user top artists
+
+    const {
+        items: artistItems
+    } = locals.artists
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/head', {title: `${locals.title} | Spotify` }) %>
+
+    <link rel="stylesheet" href="/css/explore.css">
+</head>
+
+<body>
+
+    <!--
+      - #RECENTLY PLAYED
+    -->
+
+    <%- include("../layouts/recent-played", { recentlyPlayed: locals.recentlyPlayedTracks }) %>
+
+
+    <article class="page custom-scrollbar" data-page>
+
+    <!--
+       - TOP APP BAR
+     -->
+        <%- include("../partials/top-bar", locals.currentProfile) %>
+
+    <!--
+      - BOTTOM NAV
+     -->
+        <%- include("../partials/bottom-nav") %>
+
+
+        <div class="main" data-main>
+            <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title"><%= locals.title %></h2>
+                </div>
+    
+                <div class="grid-list">
+                    <% artistItems.forEach(({name, type, images, id, uri}) => { %>
+                            <% 
+                                const [image] = images || [];
+                            %>
+    
+                            <%- include("../partials/card", {
+                                variant: 'artist-card',
+                                title: name,
+                                image,
+                                type: "artist",
+                                text: type,
+                                link: `/artist/${id}`,
+                                uri
+                            }) %>
+                    <% }) %>
+                </div>
+
+                <!--   
+                    - #PAGINATION   
+                -->
+                <%- include("../partials/pagination", locals.artists) %>
+            </section>
+        </div>
+
+    <!--
+        - #PLAYER SM
+    -->
+
+    <%- include('../partials/player-sm') %>
+
+
+    <!--
+        - #PLAYER LG
+    -->
+
+        <%- include('../partials/player-lg') %>
+
+    <!--
+      - #FOOTER
+    -->
+
+        <%- include('../layouts/footer') %>
+    </article>
+</body>
+
+</html>

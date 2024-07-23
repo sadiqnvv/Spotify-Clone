@@ -1,0 +1,100 @@
+<% 
+    // categories
+    const {
+        items: categoryItems
+    } = locals.categories
+
+%>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/head', {title: 'Explore | Spotify' }) %>
+
+    <link rel="stylesheet" href="/css/explore.css">
+</head>
+
+<body>
+
+    <!--
+      - #RECENTLY PLAYED
+    -->
+
+    <%- include("../layouts/recent-played", {
+        recentlyPlayed: locals.recentlyPlayedTracks
+    }) %>
+
+
+    <article class="page custom-scrollbar" data-page>
+
+    <!--
+       - TOP APP BAR
+     -->
+    <%- include("../partials/top-bar", locals.currentProfile) %>
+
+    <!--
+      - BOTTOM NAV
+     -->
+    <%- include("../partials/bottom-nav", {currentRoute: "/explore"}) %>
+
+
+    <div class="main">
+        <section class="section">
+            <div class="title-wrapper">
+                <h2 class="title-large section-title">Explore</h2>
+            </div>
+
+            <div class="grid-list">
+
+                <% categoryItems.forEach(({icons, id, name}) => { %>
+
+                    <% const { url, height, width } = icons[0] %>
+
+                    <%- include("../partials/category-card", {
+                        url,
+                        height,
+                        width,
+                        name,
+                        id
+                    }) %>
+
+
+                <% }) %>
+
+            </div>
+
+
+            <!--   
+                - #PAGINATION   
+            -->
+
+            <%- include("../partials/pagination", locals.categories) %>
+        </section>
+    </div>
+
+
+
+    <!--
+        - #PLAYER SM
+    -->
+
+      <%- include('../partials/player-sm') %>
+
+
+    <!--
+        - #PLAYER LG
+    -->
+
+      <%- include('../partials/player-lg') %>
+
+    <!--
+      - #FOOTER
+    -->
+
+        <%- include('../layouts/footer') %>
+    </article>
+</body>
+
+</html>

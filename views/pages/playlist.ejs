@@ -1,0 +1,111 @@
+<% 
+const {
+    baseUrl,
+    page,
+    message: title,
+    playlists: {items: featuredPlaylistItems}
+} = locals.featuredPlaylist
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../layouts/head', {title: `${title} | Spotify` }) %>
+
+    <link rel="stylesheet" href="/css/explore.css">
+</head>
+
+<body>
+
+    <!--
+      - #RECENTLY PLAYED
+    -->
+
+    <%- include("../layouts/recent-played", { recentlyPlayed: locals.recentlyPlayedTracks }) %>
+
+
+    <article class="page custom-scrollbar" data-page>
+
+    <!--
+       - TOP APP BAR
+     -->
+        <%- include("../partials/top-bar", locals.currentProfile) %>
+
+    <!--
+      - BOTTOM NAV
+     -->
+        <%- include("../partials/bottom-nav", {currentRoute: "/playlists" }) %>
+
+
+        <div class="main" data-main>
+            <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title"><%= title %></h2>
+                </div>
+    
+                <div class="grid-list">
+                    <% featuredPlaylistItems.forEach(item => { %>
+
+                        <% if(item !== null) {%>
+    
+                            <% 
+                                const {
+                                    id,
+                                    images,
+                                    name: title,
+                                    description,
+                                    uri
+                                } = item
+    
+                                const [image] = images || [];
+                            %>
+    
+                            <%- include("../partials/card", {
+                                image,
+                                type: "playlist",
+                                title,
+                                text: description,
+                                link: `/playlist/${id}`,
+                                uri
+                            }) %>
+    
+                        <% } %>
+    
+    
+                    <% }) %>
+                </div>
+
+                <!--   
+                    - #PAGINATION   
+                -->
+                <%- include("../partials/pagination", {
+                    baseUrl,
+                    page,
+                    ...locals.featuredPlaylist.playlists
+                }) %>
+            </section>
+        </div>
+
+    <!--
+        - #PLAYER SM
+    -->
+
+    <%- include('../partials/player-sm') %>
+
+
+    <!--
+        - #PLAYER LG
+    -->
+
+        <%- include('../partials/player-lg') %>
+
+    <!--
+      - #FOOTER
+    -->
+
+        <%- include('../layouts/footer') %>
+    </article>
+</body>
+
+</html>
